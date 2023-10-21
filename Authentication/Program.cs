@@ -14,7 +14,7 @@ app.UseAuthentication();
 
 app.MapGet("/username", (HttpContext ctx) =>
 {
-    var usr = ctx.User.FindFirst("usr").Value;
+    var usr = ctx.User.FindFirst("usr")?.Value ?? "empty";
     return usr;
 });
 
