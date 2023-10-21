@@ -12,7 +12,7 @@ var app = builder.Build();
 
 app.UseAuthentication();
 
-app.MapGet("/username", (HttpContext ctx) =>
+app.MapGet("/unsecure", (HttpContext ctx) =>
 {
     var usr = ctx.User.FindFirst("usr")?.Value ?? "empty";
     return usr;
