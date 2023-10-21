@@ -12,6 +12,26 @@ var app = builder.Build();
 
 app.UseAuthentication();
 
+app.Use((ctx, next) =>
+{
+    if (ctx.Request.Path.StartsWithSegments("/login"))
+    {
+        return next();
+    }
+    if (!ctx.User.Identities.Any(x => x.AuthenticationType == AuthScheme))
+    {
+        ctx.Response.StatusCode = 401;
+        return Task.CompletedTask;
+    }
+    if (!ctx.User.HasClaim("passport_type", "ind"))
+    {
+        ctx.Response.StatusCode = 403;
+        return Task.CompletedTask;
+    }
+
+    return next();
+});
+
 app.MapGet("/unsecure", (HttpContext ctx) =>
 {
     var usr = ctx.User.FindFirst("usr")?.Value ?? "empty";
@@ -20,48 +40,48 @@ app.MapGet("/unsecure", (HttpContext ctx) =>
 
 app.MapGet("/india", (HttpContext ctx) =>
 {
-    if (!ctx.User.Identities.Any(x => x.AuthenticationType == AuthScheme))
-    {
-        ctx.Response.StatusCode = 401;
-        return "";
-    }
-    if (!ctx.User.HasClaim("passport_type", "ind"))
-    {
-        ctx.Response.StatusCode = 403;
-        return "";
-    }
+    //if (!ctx.User.Identities.Any(x => x.AuthenticationType == AuthScheme))
+    //{
+    //    ctx.Response.StatusCode = 401;
+    //    return "";
+    //}
+    //if (!ctx.User.HasClaim("passport_type", "ind"))
+    //{
+    //    ctx.Response.StatusCode = 403;
+    //    return "";
+    //}
 
     return "allowed";
 });
 
 app.MapGet("/usa", (HttpContext ctx) =>
 {
-    if (!ctx.User.Identities.Any(x => x.AuthenticationType == AuthScheme))
-    {
-        ctx.Response.StatusCode = 401;
-        return "";
-    }
-    if (!ctx.User.HasClaim("passport_type", "usa"))
-    {
-        ctx.Response.StatusCode = 403;
-        return "";
-    }
+    //if (!ctx.User.Identities.Any(x => x.AuthenticationType == AuthScheme))
+    //{
+    //    ctx.Response.StatusCode = 401;
+    //    return "";
+    //}
+    //if (!ctx.User.HasClaim("passport_type", "usa"))
+    //{
+    //    ctx.Response.StatusCode = 403;
+    //    return "";
+    //}
 
     return "allowed";
 });
 
 app.MapGet("/uae", (HttpContext ctx) =>
 {
-    if (!ctx.User.Identities.Any(x => x.AuthenticationType == AuthScheme))
-    {
-        ctx.Response.StatusCode = 401;
-        return "";
-    }
-    if (!ctx.User.HasClaim("passport_type", "uae"))
-    {
-        ctx.Response.StatusCode = 403;
-        return "";
-    }
+    //if (!ctx.User.Identities.Any(x => x.AuthenticationType == AuthScheme))
+    //{
+    //    ctx.Response.StatusCode = 401;
+    //    return "";
+    //}
+    //if (!ctx.User.HasClaim("passport_type", "uae"))
+    //{
+    //    ctx.Response.StatusCode = 403;
+    //    return "";
+    //}
 
     return "allowed";
 });
